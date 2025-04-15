@@ -55,7 +55,13 @@
                                             <td>{{ $student->birth_date}}</td> {{-- ou autre champ de date --}}
                                             <td>
                                                 <div class="flex items-center justify-between">
-                                                    <a href="#"><i class="text-success ki-filled ki-shield-tick"></i></a>
+                                                    <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-500 hover:text-red-700">
+                                                            <i class="ki-filled ki-trash"></i>
+                                                        </button>
+                                                    </form>
                                                     <a class="hover:text-primary cursor-pointer" href="#" data-modal-toggle="#student-modal">
                                                         <i class="ki-filled ki-cursor"></i>
                                                     </a>

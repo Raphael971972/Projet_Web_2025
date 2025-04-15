@@ -50,4 +50,15 @@ class StudentController extends Controller
         return redirect()->back()->with('success', 'Étudiant ajouté avec succès ! un email a été envoyé');
     }
 
+    public function destroy($id)
+    {
+
+        UserSchool::where('user_id', $id)->delete();
+
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->back()->with('success', 'Étudiant supprimé avec succès.');
+    }
+
 }
