@@ -5,7 +5,6 @@ use App\Models\Student;
 
 use App\Models\User;
 use App\Models\UserSchool;
-use Couchbase\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\PasswordMail;
@@ -60,5 +59,35 @@ class StudentController extends Controller
 
         return redirect()->back()->with('success', 'Étudiant supprimé avec succès.');
     }
+
+    public function edit($id)
+    {
+        $student = User::findOrFail($id);
+        return view('pages.students.student-modal', compact('student'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validation des données
+        $request->validate([
+            'lastname' => 'required|string|max:255',
+            'firstname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id, // Vérifie que l'email est unique sauf pour cet utilisateur
+            'birth_date' => 'required|date',
+        ]);
+
+        $student = User::findOrFail($id);
+        $student->update([
+            'last_name' => $request->lastname,
+            'first_name' => $request->firstname,
+            'email' => $request->email,
+            'birth_date' => $request->birth_date,
+        ]);
+
+        return redirect()->route('student.index')->with('success', 'Utilisateur modifié avec succès');
+    }
+
+
+
 
 }

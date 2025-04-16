@@ -62,7 +62,7 @@
                                                             <i class="ki-filled ki-trash"></i>
                                                         </button>
                                                     </form>
-                                                    <a class="hover:text-primary cursor-pointer" href="#" data-modal-toggle="#student-modal">
+                                                    <a class="hover:text-primary cursor-pointer" href="{{ route('users.edit', $student->id) }}" data-modal-toggle="#student-modal">
                                                         <i class="ki-filled ki-cursor"></i>
                                                     </a>
                                                 </div>

@@ -36,8 +36,13 @@ Route::middleware('auth')->group(function () {
         // Students
         Route::get('/students', [StudentController::class, 'index'])->name('student.index');
         Route::post('/students', [StudentController::class, 'store'])->name('students.store');
-        Route::post('/students/store', [StudentController::class, 'store'])->name('students.store');
         Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+
+        Route::get('/users/{id}/edit', [StudentController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{id}', [StudentController::class, 'update'])->name('users.update');
+
+
+
 
 
 
@@ -49,7 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::get('groups', [GroupController::class, 'index'])->name('group.index');
 
         //Email
-        Route::get('send-mail',[EmailController::class,'PasswordMail']);
+
 
         // Retro
         route::get('retros', [RetroController::class, 'index'])->name('retro.index');
