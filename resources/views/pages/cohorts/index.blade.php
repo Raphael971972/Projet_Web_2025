@@ -7,13 +7,23 @@
         </h1>
     </x-slot>
 
+    @if(session('success'))
+        <div class="alert alert-success text-green-600 p-2 mb-4 rounded bg-green-100 border border-green-300">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <!-- begin: grid -->
     <div class="grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch">
         <div class="lg:col-span-2">
             <div class="grid">
                 <div class="card card-grid h-full min-w-full">
                     <div class="card-header">
-                        <h3 class="card-title">Mes promotions</h3>
+                        <h3 class="card-title">Liste des promotions</h3>
+                        <div class="input input-sm max-w-48">
+                            <i class="ki-filled ki-magnifier"></i>
+                            <input placeholder="Rechercher une promotion" type="text"/>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div data-datatable="true" data-datatable-page-size="5">
@@ -21,42 +31,36 @@
                                 <table class="table table-border" data-datatable-table="true">
                                     <thead>
                                     <tr>
-                                        <th class="min-w-[280px]">
-                                            <span class="sort asc">
-                                                 <span class="sort-label">Promotion</span>
-                                                 <span class="sort-icon"></span>
-                                            </span>
-                                        </th>
-                                        <th class="min-w-[135px]">
-                                            <span class="sort">
-                                                <span class="sort-label">Année</span>
-                                                <span class="sort-icon"></span>
-                                            </span>
-                                        </th>
-                                        <th class="min-w-[135px]">
-                                            <span class="sort">
-                                                <span class="sort-label">Etudiants</span>
-                                                <span class="sort-icon"></span>
-                                            </span>
-                                        </th>
+                                        <th class="min-w-[135px]">Nom</th>
+                                        <th class="min-w-[135px]">Début</th>
+                                        <th class="min-w-[135px]">Fin</th>
+                                        <th class="w-[70px]"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @foreach ($cohorts as $cohort)
                                         <tr>
-                                        <td>
-                                            <div class="flex flex-col gap-2">
-                                                <a class="leading-none font-medium text-sm text-gray-900 hover:text-primary"
-                                                   href="{{ route('cohort.show', 1) }}">
-                                                    Promotion B1
-                                                </a>
-                                                <span class="text-2sm text-gray-700 font-normal leading-3">
-                                                    Cergy
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>2024-2025</td>
-                                        <td>34</td>
-                                    </tr>
+                                            <td>{{ $cohort->name }}</td>
+                                            <td>{{ $cohort->start_date }}</td>
+                                            <td>{{ $cohort->end_date }}</td>
+                                            <td>
+                                                <div class="flex items-center justify-between">
+                                                    <form action="{{ route('cohorts.destroy', $cohort->id) }}" method="POST" onsubmit="return confirm('Supprimer cette promotion ?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-500 hover:text-red-700">
+                                                            <i class="ki-filled ki-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                    <a class="hover:text-primary cursor-pointer" onclick="openEditModal({{ $cohort->id }})">
+
+
+                                                    <i class="ki-filled ki-cursor"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -76,32 +80,72 @@
                 </div>
             </div>
         </div>
+
+        <!-- formulaire ajout -->
         <div class="lg:col-span-1">
             <div class="card h-full">
                 <div class="card-header">
-                    <h3 class="card-title">
-                        Ajouter une promotion
-                    </h3>
+                    <h3 class="card-title">Ajouter une promotion</h3>
                 </div>
                 <div class="card-body flex flex-col gap-5">
-                    <form id="add-cohort-form" class="flex flex-col gap-5">
-                        @csrf
+                    <style>
+                        .form-container {
+                            max-width: 400px;
+                            margin: auto;
+                            padding: 20px;
+                            border-radius: 8px;
+                            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                            background-color: #f9f9f9;
+                        }
+                        label {
+                            display: block;
+                            margin-bottom: 8px;
+                            font-weight: bold;
+                        }
+                        input, textarea {
+                            width: 100%;
+                            padding: 8px;
+                            margin-bottom: 16px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                        }
+                        button {
+                            background-color: #007bff;
+                            color: white;
+                            padding: 10px 15px;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        }
+                        button:hover {
+                            background-color: #0056b3;
+                        }
+                    </style>
+                    <div class="form-container">
+                        <form action="{{ route('cohorts.store') }}" method="POST">
+                            @csrf
 
-                        <x-forms.input name="name" :label="__('Nom')" />
+                            <label for="name">Nom</label>
+                            <input type="text" id="name" name="name" required>
 
-                        <x-forms.input name="description" :label="__('Description')" />
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description"></textarea>
 
-                        <x-forms.input type="date" name="start_year" :label="__('Début de l\'année')" placeholder="" />
+                            <label for="start_year">Début de l'année</label>
+                            <input type="date" id="start_year" name="start_year" required>
 
-                        <x-forms.input type="date" name="end_year" :label="__('Fin de l\'année')" placeholder="" />
+                            <label for="end_year">Fin de l'année</label>
+                            <input type="date" id="end_year" name="end_year" required>
 
-                        <x-forms.primary-button type="submit">
-                            {{ __('Valider') }}
-                        </x-forms.primary-button>
-                    </form>
+                            <button type="submit">Confirmer</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- end: grid -->
 </x-app-layout>
+
+@include('pages.cohorts.cohort-modal')
+
