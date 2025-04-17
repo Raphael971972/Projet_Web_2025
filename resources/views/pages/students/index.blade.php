@@ -52,7 +52,7 @@
                                         <tr>
                                             <td>{{ $student->last_name }}</td>
                                             <td>{{ $student->first_name }}</td>
-                                            <td>{{ $student->birth_date}}</td> {{-- ou autre champ de date --}}
+                                            <td>{{ $student->birth_date}}</td>
                                             <td>
                                                 <div class="flex items-center justify-between">
                                                     <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?');">

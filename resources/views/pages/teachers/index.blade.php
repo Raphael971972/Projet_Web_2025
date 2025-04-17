@@ -16,7 +16,7 @@
                         <h3 class="card-title">Liste des enseignants</h3>
                         <div class="input input-sm max-w-48">
                             <i class="ki-filled ki-magnifier"></i>
-                            <input placeholder="Rechercher un enseignant" type="text"/>
+                            <input placeholder="Rechercher un enseignants" type="text"/>
                         </div>
                     </div>
                     <div class="card-body">
@@ -41,37 +41,28 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Doe</td>
-                                            <td>John</td>
-                                            <td>
-                                                <div class="flex items-center justify-between">
-                                                    <a href="#">
-                                                        <i class="text-success ki-filled ki-shield-tick"></i>
-                                                    </a>
-
-                                                    <a class="hover:text-primary cursor-pointer" href="#"
-                                                       data-modal-toggle="#student-modal">
-                                                        <i class="ki-filled ki-cursor"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Joe</td>
-                                            <td>Dohn</td>
-                                            <td>
-                                                <div class="flex items-center justify-between">
-                                                    <a href="#">
-                                                        <i class="text-danger ki-filled ki-shield-cross"></i>
-                                                    </a>
-                                                    <a class="hover:text-primary cursor-pointer" href="#"
-                                                       data-modal-toggle="#student-modal">
-                                                        <i class="ki-filled ki-cursor"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    @foreach ($teachers as $teacher)
+                                        @if($teachers_role && $teachers_role->contains('user_id',$teacher->id))
+                                            <tr>
+                                                <td>{{ $teacher->last_name }}</td>
+                                                <td>{{ $teacher->first_name }}</td>
+                                                <td>
+                                                    <div class="flex items-center justify-between">
+                                                        <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="text-red-500 hover:text-red-700">
+                                                                <i class="ki-filled ki-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                        <a class="hover:text-primary cursor-pointer" href="{{ route('users.edit', $teacher->id) }}" data-modal-toggle="#teacher-modal">
+                                                            <i class="ki-filled ki-cursor"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -95,16 +86,70 @@
             <div class="card h-full">
                 <div class="card-header">
                     <h3 class="card-title">
-                        Ajouter un Enseignant
+                        Ajouter un enseignant
                     </h3>
                 </div>
                 <div class="card-body flex flex-col gap-5">
-                    Formulaire à créer
-                    <!-- @todo A compléter -->
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 40px;
+                        }
+                        .form-container {
+                            max-width: 400px;
+                            margin: auto;
+                            padding: 20px;
+                            border-radius: 8px;
+                            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                            background-color: #f9f9f9;
+                        }
+                        label {
+                            display: block;
+                            margin-bottom: 8px;
+                            font-weight: bold;
+                        }
+                        input[type="text"],
+                        input[type="email"] {
+                            width: 100%;
+                            padding: 8px;
+                            margin-bottom: 16px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                        }
+                        button {
+                            background-color: #007bff;
+                            color: white;
+                            padding: 10px 15px;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        }
+                        button:hover {
+                            background-color: #0056b3;
+                        }
+                    </style>
+                    <div class="form-container">
+
+                        <form action="{{ route('teachers.store') }}"id="TeacherID" method="POST">
+                            @csrf
+                            <label for="lastname">Nom</label>
+                            <input type="text" id="lastname" name="lastname" required>
+
+                            <label for="firstname">Prénom</label>
+                            <input type="text" id="firstname" name="firstname" required>
+
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+
+                            <button type="submit">Confirmer</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
     <!-- end: grid -->
 </x-app-layout>
 

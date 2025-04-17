@@ -32,12 +32,16 @@ Route::middleware('auth')->group(function () {
 
         // Teachers
         Route::get('/teachers', [TeacherController::class, 'index'])->name('teacher.index');
+        Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
+        Route::delete('/teachers/{id}', [TeacherController::class, 'destroy'])->name('teachers.destroy');
+        Route::get('/users/{id}/edit', [TeacherController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{id}', [TeacherController::class, 'update'])->name('users.update');
+
 
         // Students
         Route::get('/students', [StudentController::class, 'index'])->name('student.index');
         Route::post('/students', [StudentController::class, 'store'])->name('students.store');
         Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
-
         Route::get('/users/{id}/edit', [StudentController::class, 'edit'])->name('users.edit');
         Route::put('/users/{id}', [StudentController::class, 'update'])->name('users.update');
 

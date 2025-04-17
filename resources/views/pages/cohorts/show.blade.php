@@ -41,14 +41,27 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @foreach ($students as $student)
                                         <tr>
-                                        <td>Doe</td>
-                                        <td>John</td>
-                                        <td>10/02/2000</td>
-                                        <td class="cursor-pointer pointer">
-                                            <i class="ki-filled ki-trash"></i>
-                                        </td>
-                                    </tr>
+                                            <td>{{ $student->last_name }}</td>
+                                            <td>{{ $student->first_name }}</td>
+                                            <td>{{ $student->birth_date}}</td>
+                                            <td>
+                                                <div class="flex items-center justify-between">
+                                                    <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-500 hover:text-red-700">
+                                                            <i class="ki-filled ki-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                    <a class="hover:text-primary cursor-pointer" href="{{ route('users.edit', $student->id) }}" data-modal-toggle="#student-modal">
+                                                        <i class="ki-filled ki-cursor"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
