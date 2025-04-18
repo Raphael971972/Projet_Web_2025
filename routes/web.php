@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/cohorts/{id}', [CohortController::class, 'destroy'])->name('cohorts.destroy');
         Route::get('/cohorts/{id}/edit', [CohortController::class, 'edit'])->name('cohorts.edit');
         Route::put('/cohorts/{id}', [CohortController::class, 'update'])->name('cohorts.update');
+        Route::get('/teacher/promotions', [TeacherController::class, 'myPromotions'])->name('teacher.promotions');
+
 
 
 

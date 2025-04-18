@@ -89,4 +89,13 @@ class TeacherController extends Controller
 
         return redirect()->route('teacher.index')->with('success', 'User successfully updated');
     }
+
+    public function myPromotions()
+    {
+        $user = auth()->user();
+        $cohorts = $user->cohorts;
+
+        return view('pages.teachers.my-promotions', compact('cohorts'));
+    }
+
 }
