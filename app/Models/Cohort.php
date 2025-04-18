@@ -10,5 +10,4 @@ class Cohort extends Model
     protected $fillable     = ['school_id', 'name', 'description', 'start_date', 'end_date'];
 
 
-
 }

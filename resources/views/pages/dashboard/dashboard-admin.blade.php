@@ -22,11 +22,9 @@
                 </thead>
                 <tbody>
                 <tr style="text-align: center;">
-                    <td>B1</td>
-                    <td>B2</td>
-                    <td>B3</td>
-                    <td>M1</td>
-                    <td>M2</td>
+                    <td>{{$nbCohort}}</td>
+                </tr>
+
                 </tr>
                 </tbody>
             </table>
@@ -86,7 +84,7 @@
                 </thead>
                 <tbody>
                 <tr style="text-align: center;">
-                    <td>{{$nbGroups}}</td>
+                    <td>0</td>
                 </tr>
                 </tbody>
             </table>

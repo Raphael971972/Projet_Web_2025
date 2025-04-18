@@ -84,7 +84,7 @@ class StudentController extends Controller
             'birth_date' => $request->birth_date,
         ]);
 
-        return redirect()->route('student.index')->with('success', 'Utilisateur modifié avec succès');
+        return redirect()->route('users.index')->with('success', 'Utilisateur modifié avec succès');
     }
 
 
