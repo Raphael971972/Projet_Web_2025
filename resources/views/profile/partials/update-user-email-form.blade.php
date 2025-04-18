@@ -11,9 +11,10 @@
                     Email
                 </label>
                 <div class="flex flex-col tems-start grow gap-7.5 w-full">
-                    <x-forms.input
-                        name="email" type="text" :value="old('email', auth()->user()->email)"
-                        required autofocus class="w-full" :messages="$errors->get('email')" />
+                    @method('PUT')
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ old('email', auth()->user()->email) }}" required>
+
                 </div>
             </div>
         </div>
